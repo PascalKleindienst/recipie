@@ -4,8 +4,8 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "format:fix": "prettier resources/js --write ",
-        "format:check": "prettier resources/js --check"
+        "format:fix": "prettier resources --write ",
+        "format:check": "prettier resources --check"
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.0.7",
