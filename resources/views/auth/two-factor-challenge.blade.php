@@ -1,84 +1,82 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<x-layouts.auth>
+    <div class="flex flex-col gap-6" x-data="{ recovery: false }">
+        <x-auth-header
+            x-show="! recovery"
+            :title="__('Two Factor Authentication')"
+            :description="__('Please confirm access to your account by entering the authentication code provided by your authenticator application.')"
+        />
+        <x-auth-header
+            x-show="recovery"
+            x-cloak
+            :title="__('Two Factor Authentication')"
+            :description="__('Please confirm access to your account by entering one of your emergency recovery codes.')"
+        />
 
-        <div x-data="{ recovery: false }">
-            <div class="mb-4 text-sm text-gray-600" x-show="! recovery">
-                {{ __('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}
+        <!-- Session Status -->
+        <x-auth-session-status class="text-center" :status="session('status')" />
+
+        <form method="POST" action="{{ route('two-factor.login') }}" class="flex flex-col gap-6">
+            @csrf
+            <!-- Code -->
+            <div x-show="! recovery">
+                <flux:input
+                    wire:model="code"
+                    :label="__('Code')"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    autofocus
+                    x-ref="code"
+                />
             </div>
 
-            <div class="mb-4 text-sm text-gray-600" x-cloak x-show="recovery">
-                {{ __('Please confirm access to your account by entering one of your emergency recovery codes.') }}
+            <!-- Recovery Code -->
+            <div x-show="recovery" x-cloak>
+                <flux:input
+                    wire:model="recovery_code"
+                    :label="__('Recovery Code')"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    autofocus
+                    x-ref="recovery_code"
+                />
             </div>
 
-            <x-validation-errors class="mb-4" />
+            <div class="mt-4 flex items-center justify-end">
+                <flux:button
+                    variant="ghost"
+                    class="w-full"
+                    x-show="! recovery"
+                    x-on:click="
+                        recovery = true
+                        $nextTick(() => {
+                            $refs.recovery_code.focus()
+                        })
+                    "
+                >
+                    {{ __('Use a recovery code') }}
+                </flux:button>
 
-            <form method="POST" action="{{ route('two-factor.login') }}">
-                @csrf
+                <flux:button
+                    variant="ghost"
+                    type="button"
+                    x-cloak
+                    x-show="recovery"
+                    x-on:click="
+                        recovery = false
+                        $nextTick(() => {
+                            $refs.code.focus()
+                        })
+                    "
+                >
+                    {{ __('Use an authentication code') }}
+                </flux:button>
 
-                <div class="mt-4" x-show="! recovery">
-                    <x-label for="code" value="{{ __('Code') }}" />
-                    <x-input
-                        id="code"
-                        class="mt-1 block w-full"
-                        type="text"
-                        inputmode="numeric"
-                        name="code"
-                        autofocus
-                        x-ref="code"
-                        autocomplete="one-time-code"
-                    />
-                </div>
-
-                <div class="mt-4" x-cloak x-show="recovery">
-                    <x-label for="recovery_code" value="{{ __('Recovery Code') }}" />
-                    <x-input
-                        id="recovery_code"
-                        class="mt-1 block w-full"
-                        type="text"
-                        name="recovery_code"
-                        x-ref="recovery_code"
-                        autocomplete="one-time-code"
-                    />
-                </div>
-
-                <div class="mt-4 flex items-center justify-end">
-                    <button
-                        type="button"
-                        class="cursor-pointer text-sm text-gray-600 underline hover:text-gray-900"
-                        x-show="! recovery"
-                        x-on:click="
-                            recovery = true
-                            $nextTick(() => {
-                                $refs.recovery_code.focus()
-                            })
-                        "
-                    >
-                        {{ __('Use a recovery code') }}
-                    </button>
-
-                    <button
-                        type="button"
-                        class="cursor-pointer text-sm text-gray-600 underline hover:text-gray-900"
-                        x-cloak
-                        x-show="recovery"
-                        x-on:click="
-                            recovery = false
-                            $nextTick(() => {
-                                $refs.code.focus()
-                            })
-                        "
-                    >
-                        {{ __('Use an authentication code') }}
-                    </button>
-
-                    <x-button class="ms-4">
-                        {{ __('Log in') }}
-                    </x-button>
-                </div>
-            </form>
-        </div>
-    </x-authentication-card>
-</x-guest-layout>
+                <flux:button variant="primary" type="submit" class="ms-4">
+                    {{ __('Log in') }}
+                </flux:button>
+            </div>
+        </form>
+    </div>
+</x-layouts.auth>

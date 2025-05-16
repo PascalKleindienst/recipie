@@ -1,28 +1,27 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<x-layouts.auth>
+    <div class="flex flex-col gap-6">
+        <x-auth-header
+            :title="__('Confirm Password')"
+            :description="__('This is a secure area of the application. Please confirm your password before continuing.')"
+        />
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
-        </div>
+        <!-- Session Status -->
+        <x-auth-session-status class="text-center" :status="session('status')" />
 
-        <x-validation-errors class="mb-4" />
-
-        <form method="POST" action="{{ route('password.confirm') }}">
+        <form method="POST" action="{{ route('password.confirm') }}" class="flex flex-col gap-6">
             @csrf
 
-            <div>
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="mt-1 block w-full" type="password" name="password" required autocomplete="current-password" autofocus />
-            </div>
+            <flux:input
+                wire:model="password"
+                :label="__('Password')"
+                type="password"
+                required
+                autocomplete="new-password"
+                :placeholder="__('Password')"
+                viewable
+            />
 
-            <div class="mt-4 flex justify-end">
-                <x-button class="ms-4">
-                    {{ __('Confirm') }}
-                </x-button>
-            </div>
+            <flux:button variant="primary" type="submit" class="w-full">{{ __('Confirm') }}</flux:button>
         </form>
-    </x-authentication-card>
-</x-guest-layout>
+    </div>
+</x-layouts.auth>

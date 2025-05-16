@@ -1,47 +1,46 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<x-layouts.auth>
+    <div class="flex flex-col gap-6">
+        <x-auth-header :title="__('Create Account')" :description="__('Enter your details below to create your account')" />
 
-        <x-validation-errors class="mb-4" />
+        <!-- Session Status -->
+        <x-auth-session-status class="text-center" :status="session('status')" />
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register') }}" class="flex flex-col gap-6">
             @csrf
 
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="mt-1 block w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
+            <!-- Name -->
+            <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name" :placeholder="__('Full name')" />
 
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="mt-1 block w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
+            <!-- Email Address -->
+            <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" placeholder="email@example.com" />
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="mt-1 block w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
+            <!-- Password -->
+            <flux:input
+                wire:model="password"
+                :label="__('Password')"
+                type="password"
+                required
+                autocomplete="new-password"
+                :placeholder="__('Password')"
+                viewable
+            />
 
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input
-                    id="password_confirmation"
-                    class="mt-1 block w-full"
-                    type="password"
-                    name="password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-            </div>
+            <!-- Confirm Password -->
+            <flux:input
+                wire:model="password_confirmation"
+                :label="__('Confirm Password')"
+                type="password"
+                required
+                autocomplete="new-password"
+                :placeholder="__('Confirm Password')"
+                viewable
+            />
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
                     <x-label for="terms">
                         <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
+                            <flux:checkbox wire:model="terms" name="terms" id="terms" />
                             <div class="ms-2">
                                 {!!
                                     __('I agree to the :terms_of_service and :privacy_policy', [
@@ -51,22 +50,21 @@
                                 !!}
                             </div>
                         </div>
+                        <flux:error name="terms" class="mt-2" />
                     </x-label>
                 </div>
             @endif
 
-            <div class="mt-4 flex items-center justify-end">
-                <a
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
-                    href="{{ route('login') }}"
-                >
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ms-4">
+            <div class="flex items-center justify-end">
+                <flux:button type="submit" variant="primary" class="w-full">
                     {{ __('Register') }}
-                </x-button>
+                </flux:button>
             </div>
         </form>
-    </x-authentication-card>
-</x-guest-layout>
+
+        <div class="space-x-1 text-center text-sm text-zinc-600 rtl:space-x-reverse dark:text-zinc-400">
+            {{ __('Already registered?') }}
+            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+        </div>
+    </div>
+</x-layouts.auth>

@@ -1,60 +1,56 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<x-layouts.auth>
+    <div class="flex flex-col gap-6">
+        <x-auth-header :title="__('Login')" :description="__('Enter your email and password below to log in')" />
 
-        <x-validation-errors class="mb-4" />
+        <!-- Session Status -->
+        <x-auth-session-status class="text-center" :status="session('status')" />
 
-        @session('status')
-            <div class="mb-4 text-sm font-medium text-green-600">
-                {{ $value }}
-            </div>
-        @endsession
-
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-6">
             @csrf
 
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input
-                    id="email"
-                    class="mt-1 block w-full"
-                    type="email"
-                    name="email"
-                    :value="old('email')"
+            <!-- Email Address -->
+            <flux:input
+                wire:model="email"
+                :label="__('Email')"
+                type="email"
+                required
+                autofocus
+                autocomplete="email"
+                placeholder="email@example.com"
+            />
+
+            <!-- Password -->
+            <div class="relative">
+                <flux:input
+                    wire:model="password"
+                    :label="__('Password')"
+                    type="password"
                     required
-                    autofocus
-                    autocomplete="username"
+                    autocomplete="current-password"
+                    :placeholder="__('Password')"
+                    viewable
                 />
-            </div>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="mt-1 block w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
-
-            <div class="mt-4 block">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
                 @if (Route::has('password.request'))
-                    <a
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
-                        href="{{ route('password.request') }}"
-                    >
+                    <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
                         {{ __('Forgot your password?') }}
-                    </a>
+                    </flux:link>
                 @endif
+            </div>
 
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
+            <!-- Remember Me -->
+            <flux:checkbox wire:model="remember" :label="__('Remember me')" />
+
+            <div class="flex items-center justify-end">
+                <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
             </div>
         </form>
-    </x-authentication-card>
-</x-guest-layout>
+
+        @if (Route::has('register'))
+            <div class="space-x-1 text-center text-sm text-zinc-600 rtl:space-x-reverse dark:text-zinc-400">
+                {{ __('Don\'t have an account?') }}
+                <flux:link :href="route('register')" wire:navigate>{{ __('Register') }}</flux:link>
+            </div>
+        @endif
+    </div>
+</x-layouts.auth>
