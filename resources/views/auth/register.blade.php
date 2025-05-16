@@ -38,7 +38,7 @@
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
-                    <x-label for="terms">
+                    <flux:label for="terms">
                         <div class="flex items-center">
                             <flux:checkbox wire:model="terms" name="terms" id="terms" />
                             <div class="ms-2">
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <flux:error name="terms" class="mt-2" />
-                    </x-label>
+                    </flux:label>
                 </div>
             @endif
 

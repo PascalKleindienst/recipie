@@ -1,16 +1,8 @@
-<x-action-section>
-    <x-slot name="title">
-        {{ __('Browser Sessions') }}
-    </x-slot>
-
-    <x-slot name="description">
-        {{ __('Manage and log out your active sessions on other browsers and devices.') }}
-    </x-slot>
-
+<x-action-section :title="__('Browser Sessions')" :description="__('Manage and log out your active sessions on other browsers and devices.')">
     <x-slot name="content">
-        <div class="max-w-xl text-sm text-gray-600">
+        <flux:subheading>
             {{ __('If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.') }}
-        </div>
+        </flux:subheading>
 
         @if (count($this->sessions) > 0)
             <div class="mt-5 space-y-6">
@@ -75,9 +67,9 @@
         @endif
 
         <div class="mt-5 flex items-center">
-            <x-button wire:click="confirmLogout" wire:loading.attr="disabled">
+            <flux:button variant="primary" wire:click="confirmLogout" wire:loading.attr="disabled">
                 {{ __('Log Out Other Browser Sessions') }}
-            </x-button>
+            </flux:button>
 
             <x-action-message class="ms-3" on="loggedOut">
                 {{ __('Done.') }}
@@ -85,42 +77,35 @@
         </div>
 
         <!-- Log Out Other Devices Confirmation Modal -->
-        <x-dialog-modal wire:model.live="confirmingLogout">
-            <x-slot name="title">
-                {{ __('Log Out Other Browser Sessions') }}
-            </x-slot>
-
-            <x-slot name="content">
+        <flux:modal wire:model.live="confirmingLogout" class="space-y-6">
+            <flux:heading>{{ __('Log Out Other Browser Sessions') }}</flux:heading>
+            <flux:subheading>
                 {{ __('Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.') }}
+            </flux:subheading>
 
-                <div
-                    class="mt-4"
-                    x-data="{}"
-                    x-on:confirming-logout-other-browser-sessions.window="setTimeout(() => $refs.password.focus(), 250)"
-                >
-                    <x-input
-                        type="password"
-                        class="mt-1 block w-3/4"
-                        autocomplete="current-password"
-                        placeholder="{{ __('Password') }}"
-                        x-ref="password"
-                        wire:model="password"
-                        wire:keydown.enter="logoutOtherBrowserSessions"
-                    />
+            <div class="mt-4">
+                <flux:input
+                    type="password"
+                    class="mt-1 block w-3/4"
+                    autocomplete="current-password"
+                    autofocus
+                    placeholder="{{ __('Password') }}"
+                    x-ref="password"
+                    wire:model="password"
+                    wire:keydown.enter="logoutOtherBrowserSessions"
+                />
+                <flux:error name="password" />
+            </div>
 
-                    <x-input-error for="password" class="mt-2" />
-                </div>
-            </x-slot>
-
-            <x-slot name="footer">
-                <x-secondary-button wire:click="$toggle('confirmingLogout')" wire:loading.attr="disabled">
+            <div>
+                <flux:button variant="outline" wire:click="$toggle('confirmingLogout')" wire:loading.attr="disabled">
                     {{ __('Cancel') }}
-                </x-secondary-button>
+                </flux:button>
 
-                <x-button class="ms-3" wire:click="logoutOtherBrowserSessions" wire:loading.attr="disabled">
+                <flux:button variant="primary" class="ms-3" wire:click="logoutOtherBrowserSessions" wire:loading.attr="disabled">
                     {{ __('Log Out Other Browser Sessions') }}
-                </x-button>
-            </x-slot>
-        </x-dialog-modal>
+                </flux:button>
+            </div>
+        </flux:modal>
     </x-slot>
 </x-action-section>
