@@ -1,13 +1,10 @@
 <x-layouts.app>
-    <x-slot name="header">
-        <h2 class="text-xl leading-tight font-semibold text-gray-800">
-            {{ __('API Tokens') }}
-        </h2>
-    </x-slot>
+    @include('partials.settings-heading')
 
-    <div>
-        <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-            @livewire('api.api-token-manager')
-        </div>
-    </div>
+    <x-settings.layout
+        :heading="__('Create API Token')"
+        :subheading="__('API tokens allow third-party services to authenticate with our application on your behalf.')"
+    >
+        @livewire('api.api-token-manager')
+    </x-settings.layout>
 </x-layouts.app>
