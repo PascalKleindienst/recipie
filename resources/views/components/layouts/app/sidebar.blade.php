@@ -12,9 +12,12 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
+                <flux:navlist.group class="grid gap-2">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="list-bullet" :href="route('recipes.index')" :current="request()->routeIs('recipes.*')" wire:navigate>
+                        {{ __('Recipes') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
