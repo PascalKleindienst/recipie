@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\NutrientCast;
 use App\Enums\Diet;
 use App\Enums\Difficulty;
+use App\ValueObjects\Nutrient;
 use Database\Factories\RecipeFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -26,38 +32,38 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $cuisine
  * @property array<array-key, mixed>|null $tags
  * @property Diet|null $diet
- * @property string|null $nutrients
+ * @property Nutrient[]|null $nutrients
  * @property int $user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RecipeIngredient> $ingredients
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, RecipeIngredient> $ingredients
  * @property-read int|null $ingredients_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RecipeInstruction> $instructions
+ * @property-read Collection<int, RecipeInstruction> $instructions
  * @property-read int|null $instructions_count
- * @property-read \App\Models\User $user
+ * @property-read User $user
  *
- * @method static \Database\Factories\RecipeFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereCooktime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereCuisine($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereDiet($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereDifficulty($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereNutrients($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe wherePreptime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereServings($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereSource($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereTags($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Recipe whereUserId($value)
+ * @method static RecipeFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Recipe newModelQuery()
+ * @method static Builder<static>|Recipe newQuery()
+ * @method static Builder<static>|Recipe query()
+ * @method static Builder<static>|Recipe whereCooktime($value)
+ * @method static Builder<static>|Recipe whereCreatedAt($value)
+ * @method static Builder<static>|Recipe whereCuisine($value)
+ * @method static Builder<static>|Recipe whereDescription($value)
+ * @method static Builder<static>|Recipe whereDiet($value)
+ * @method static Builder<static>|Recipe whereDifficulty($value)
+ * @method static Builder<static>|Recipe whereId($value)
+ * @method static Builder<static>|Recipe whereImage($value)
+ * @method static Builder<static>|Recipe whereNutrients($value)
+ * @method static Builder<static>|Recipe wherePreptime($value)
+ * @method static Builder<static>|Recipe whereServings($value)
+ * @method static Builder<static>|Recipe whereSource($value)
+ * @method static Builder<static>|Recipe whereTags($value)
+ * @method static Builder<static>|Recipe whereTitle($value)
+ * @method static Builder<static>|Recipe whereUpdatedAt($value)
+ * @method static Builder<static>|Recipe whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 final class Recipe extends Model
 {
@@ -112,7 +118,7 @@ final class Recipe extends Model
             'difficulty' => Difficulty::class,
             'diet' => Diet::class,
             'tags' => 'array',
-            // 'nutrients' => NutrientCast::class,
+            'nutrients' => NutrientCast::class,
         ];
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('position');
             $table->text('content');
             $table->text('image')->nullable();
-            $table->foreignIdFor(Recipe::class)->constrained('recipes');
+            $table->foreignIdFor(Recipe::class)->constrained('recipes')->cascadeOnDelete();
             $table->timestamps();
         });
     }

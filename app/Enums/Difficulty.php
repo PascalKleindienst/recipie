@@ -13,9 +13,9 @@ enum Difficulty: string
     public function label(): string
     {
         return match ($this) {
-            self::EASY => __('Easy'),
-            self::MEDIUM => __('Medium'),
-            self::HARD => __('Hard'),
+            self::EASY => __('recipe.difficulties.easy'),
+            self::MEDIUM => __('recipe.difficulties.medium'),
+            self::HARD => __('recipe.difficulties.hard'),
         };
     }
 }

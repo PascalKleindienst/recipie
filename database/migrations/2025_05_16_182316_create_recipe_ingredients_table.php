@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('name');
             $table->float('amount')->nullable();
             $table->string('unit')->nullable();
-            $table->foreignIdFor(Recipe::class)->constrained('recipes');
+            $table->foreignIdFor(Recipe::class)->constrained('recipes')->cascadeOnDelete();
             $table->timestamps();
         });
     }

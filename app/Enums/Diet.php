@@ -15,11 +15,11 @@ enum Diet: string
     public function label(): string
     {
         return match ($this) {
-            self::VEGAN => __('Vegan'),
-            self::VEGETARIAN => __('Vegetarian'),
-            self::GLUTEN_FREE => __('Gluten-free'),
-            self::PESCETARIAN => __('Pescetarian'),
-            self::MEAT => __('Meat'),
+            self::VEGAN => __('recipe.diets.vegan'),
+            self::VEGETARIAN => __('recipe.diets.vegetarian'),
+            self::GLUTEN_FREE => __('recipe.diets.gluten-free'),
+            self::PESCETARIAN => __('recipe.diets.pescetarian'),
+            self::MEAT => __('recipe.diets.meat'),
         };
     }
 
@@ -31,17 +31,6 @@ enum Diet: string
             self::GLUTEN_FREE => 'wheat-off',
             self::PESCETARIAN => 'fish',
             self::MEAT => 'beef',
-        };
-    }
-
-    public function color(): string
-    {
-        return match ($this) {
-            self::VEGAN => 'green',
-            self::VEGETARIAN => 'green',
-            self::GLUTEN_FREE => 'green',
-            self::PESCETARIAN => 'green',
-            self::MEAT => 'green',
         };
     }
 }

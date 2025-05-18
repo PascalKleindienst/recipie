@@ -24,7 +24,7 @@ return new class extends Migration
             $table->json('tags')->nullable()->default('[]');
             $table->string('diet')->nullable();
             $table->json('nutrients')->nullable();
-            $table->foreignIdFor(User::class)->constrained('users');
+            $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
