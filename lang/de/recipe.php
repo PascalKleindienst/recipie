@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'cooking_instructions_title' => 'Zubereitung',
+    'empty' => 'Keine Rezepte gefunden.',
     'nutrients' => [
         'calories' => 'Kalorien',
         'carbohydrates' => 'Kohlenhydrate',
@@ -50,5 +51,6 @@ return [
         'save' => 'Speichern',
         'add_ingredient' => 'Zutat hinzufügen',
         'add_instruction' => 'Zubereitungsschritt hinzufügen',
+        'download_pdf' => 'PDF herunterladen',
     ],
 ];

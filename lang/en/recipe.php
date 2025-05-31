@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'cooking_instructions_title' => 'Cooking Instructions',
+    'empty' => 'No recipes found.',
     'nutrients' => [
         'calories' => 'Calories',
         'carbohydrates' => 'Carbohydrates',
@@ -50,5 +51,6 @@ return [
         'save' => 'Save',
         'add_ingredient' => 'Add Ingredient',
         'add_instruction' => 'Add Instruction Step',
+        'download_pdf' => 'Download PDF',
     ],
 ];
