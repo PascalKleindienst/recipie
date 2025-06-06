@@ -7,7 +7,7 @@ namespace App\Actions\Jetstream;
 use App\Models\User;
 use Laravel\Jetstream\Contracts\DeletesUsers;
 
-final class DeleteUser implements DeletesUsers
+final readonly class DeleteUser implements DeletesUsers
 {
     /**
      * Delete the given user.

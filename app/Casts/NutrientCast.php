@@ -12,7 +12,7 @@ use JsonException;
 /**
  * @implements CastsAttributes<Nutrient[]|null, string>
  */
-final class NutrientCast implements CastsAttributes
+final readonly class NutrientCast implements CastsAttributes
 {
     /**
      * @throws JsonException
