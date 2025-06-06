@@ -71,16 +71,14 @@
         ],
         "format": "vendor/bin/pint",
         "test:type-coverage": "vendor/bin/pest --type-coverage --memory-limit=1G --min=100",
-        "test:lint": [
-            "vendor/bin/pint --test"
-        ],
-        "test:unit": "XDEBUG_MODE=coverage vendor/bin/pest --parallel --coverage --min=90",
+        "test:lint": "vendor/bin/pint --test",
+        "test:unit": "XDEBUG_MODE=coverage vendor/bin/pest --colors=always --parallel --coverage --min=90",
         "test:types": "vendor/bin/phpstan analyse --memory-limit=1G --ansi",
         "test": [
             "@test:lint",
             "@test:type-coverage",
-            "@test:unit",
-            "@test:types"
+            "@test:types",
+            "@test:unit"
         ]
     },
     "extra": {
