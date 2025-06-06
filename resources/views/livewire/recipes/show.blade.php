@@ -91,7 +91,57 @@
         </section>
 
         {{-- Instructions --}}
-        <section class="col-span-2 space-y-6">
+        <section
+            class="col-span-2 space-y-6"
+            x-on:instruction-read.window="(event) => loadAndPlay(event.detail.file)"
+            x-data="{
+                isPlaying: false,
+                audio: null,
+
+                loadAndPlay(file) {
+                    this.audio = new Audio(file)
+                    this.audio.volume = 0.5
+                    this.audio.addEventListener('ended', () => (this.isPlaying = false))
+
+                    this.audio
+                        .play()
+                        .then(() => {
+                            this.isPlaying = true
+                        })
+                        .catch((error) => {
+                            console.log('Playback failed:', error)
+                        })
+                },
+
+                play() {
+                    if (! this.audio) {
+                        return
+                    }
+
+                    this.audio.play()
+                    this.isPlaying = true
+                },
+
+                pause() {
+                    if (! this.audio) {
+                        return
+                    }
+
+                    this.audio.pause()
+                    this.isPlaying = false
+                },
+
+                stop() {
+                    if (! this.audio) {
+                        return
+                    }
+
+                    this.audio.pause()
+                    this.audio.currentTime = 0
+                    this.isPlaying = false
+                },
+            }"
+        >
             <flux:heading size="xl" level="2">
                 {{ __('recipe.fields.instructions') }}
             </flux:heading>
@@ -99,11 +149,31 @@
             @foreach ($recipe->instructions as $instruction)
                 <div class="flex max-w-prose items-center gap-8 rounded-xl bg-zinc-200 p-4">
                     <span class="text-4xl font-semibold text-accent-content">{{ $instruction->position }}</span>
-                    <flux:text variant="strong" size="lg" x-ref="content">
+                    <flux:text variant="strong" size="lg">
                         {!! \Illuminate\Support\Str::markdown($instruction->content) !!}
                     </flux:text>
 
-                    {{-- <flux:button x-on:click="speak" x-show="supportsSpeechSynthesis()">Read</flux:button> --}}
+                    <div>
+                        <flux:button
+                            x-show="isPlaying"
+                            variant="ghost"
+                            icon="stop"
+                            square
+                            class="cursor-pointer"
+                            x-on:click="stop"
+                            :aria-label="__('recipe.cta.stop_reading')"
+                        ></flux:button>
+
+                        <flux:button
+                            x-show="! isPlaying"
+                            variant="ghost"
+                            icon="play"
+                            square
+                            class="cursor-pointer"
+                            wire:click="readInstruction({{ $instruction->id }})"
+                            :aria-label="__('recipe.cta.read_instruction')"
+                        ></flux:button>
+                    </div>
                 </div>
             @endforeach
         </section>
