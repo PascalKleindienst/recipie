@@ -8,6 +8,7 @@ use App\Enums\Diet;
 use App\Enums\Difficulty;
 use App\Models\Recipe;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -31,8 +32,8 @@ final class Index extends Component
     {
         return Recipe::query()
             ->withCount('ingredients')
-            ->when($this->diet, fn ($query, $diet) => $query->where('diet', $diet))
-            ->when($this->difficulty, fn ($query, $difficulty) => $query->where('difficulty', $difficulty))
+            ->when($this->diet, fn (Builder $query, Diet $diet) => $query->where('diet', $diet))
+            ->when($this->difficulty, fn (Builder $query, Difficulty $difficulty) => $query->where('difficulty', $difficulty))
             ->paginate(25);
     }
 
