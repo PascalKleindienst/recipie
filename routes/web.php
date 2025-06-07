@@ -25,8 +25,8 @@ Route::middleware([
 
     Route::prefix('recipes')->name('recipes.')->group(function (): void {
         Volt::route('/', 'recipes.index')->name('index');
-        Volt::route('/create', 'recipes.create')->name('create');
-        // Volt::route('/{recipe}', 'recipes.show')->name('show');
+        // Volt::route('/create', 'recipes.create')->name('create');
+        Volt::route('/{recipe}', 'recipes.show')->name('show');
     });
 });
 
