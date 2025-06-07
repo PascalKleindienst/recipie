@@ -1,7 +1,31 @@
-@php
-    use App\Enums\Diet;
-    use App\Enums\Difficulty;
-@endphp
+<?php
+
+declare(strict_types=1);
+
+use App\Enums\Diet;
+use App\Enums\Difficulty;
+use App\Facades\RecipeService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\Computed;
+use Livewire\Volt\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
+
+new class extends Component {
+    use WithoutUrlPagination;
+    use WithPagination;
+
+    public ?Diet $diet = null;
+
+    public ?Difficulty $difficulty = null;
+
+    #[Computed]
+    public function recipes(): LengthAwarePaginator
+    {
+        return RecipeService::getRecipes($this->diet, $this->difficulty);
+    }
+};
+?>
 
 <div class="space-y-6">
     <div class="grid grid-cols-3 gap-6">

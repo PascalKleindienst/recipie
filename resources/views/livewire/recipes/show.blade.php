@@ -1,3 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Models\Recipe;
+use App\Models\RecipeInstruction;
+use Livewire\Volt\Component;
+use PascalKleindienst\LaravelTextToSpeech\Facades\TextToSpeech;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
+new class extends Component {
+    public Recipe $recipe;
+
+    public ?string $speech = null;
+
+    public function downloadPdf(): StreamedResponse
+    {
+        return response()->streamDownload(function (): void {
+            echo \Barryvdh\DomPDF\Facade\Pdf::loadView('livewire.recipes.pdf', [
+                'recipe' => $this->recipe,
+            ])->output();
+        }, \Illuminate\Support\Str::slug($this->recipe->title) . '.pdf');
+    }
+
+    public function readInstruction(RecipeInstruction $instruction): void
+    {
+        if (Storage::disk(config('text-to-speech.audio.disk'))->exists(TextToSpeech::engine('google')->getFilePath($instruction->content))) {
+            $this->dispatch('instruction-read', file: asset('storage/' . TextToSpeech::engine('google')->getFilePath($instruction->content)));
+
+            return;
+        }
+
+        $this->dispatch('instruction-read', file: asset('storage/' . TextToSpeech::engine('google')->convert($instruction->content)->file));
+    }
+};
+?>
+
 <div class="max-w-7xl space-y-12">
     <div class="relative">
         @if ($recipe->image)
@@ -35,7 +72,7 @@
             <flux:icon icon="timer" class="size-10 rounded-full bg-accent p-2 text-accent-foreground md:size-14" />
             <div>
                 <flux:subheading>{{ __('recipe.fields.preptime') }}</flux:subheading>
-                <flux:heading size="lg">{{ Number::format($recipe->preptime, locale: app()->getLocale()) }} min</flux:heading>
+                <flux:heading size="lg">{{ Number::format($recipe->preptime, locale: app()->getLocale()) }}min</flux:heading>
             </div>
         </div>
 
@@ -43,7 +80,7 @@
             <flux:icon icon="cooking-pot" class="size-10 rounded-full bg-accent p-2 text-accent-foreground md:size-14" />
             <div>
                 <flux:subheading>{{ __('recipe.fields.cooktime') }}</flux:subheading>
-                <flux:heading size="lg">{{ Number::format($recipe->cooktime, locale: app()->getLocale()) }} min</flux:heading>
+                <flux:heading size="lg">{{ Number::format($recipe->cooktime, locale: app()->getLocale()) }}min</flux:heading>
             </div>
         </div>
 
