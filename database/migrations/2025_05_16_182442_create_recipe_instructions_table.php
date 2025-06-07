@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('recipe_instructions', function (Blueprint $table) {
+        Schema::create('recipe_instructions', static function (Blueprint $table): void {
             $table->id();
             $table->integer('position');
             $table->text('content');

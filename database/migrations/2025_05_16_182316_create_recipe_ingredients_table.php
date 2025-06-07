@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('recipe_ingredients', function (Blueprint $table) {
+        Schema::create('recipe_ingredients', static function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->float('amount')->nullable();

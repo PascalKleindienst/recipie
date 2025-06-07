@@ -27,7 +27,11 @@ final readonly class NutrientCast implements CastsAttributes
         $data = [];
 
         foreach ($nutrients as $nutrient => $amount) {
-            if ($amount === null || $amount === '') {
+            if ($amount === null) {
+                continue;
+            }
+
+            if ($amount === '') {
                 continue;
             }
 

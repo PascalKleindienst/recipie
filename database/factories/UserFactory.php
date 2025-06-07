@@ -12,14 +12,14 @@ use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 final class UserFactory extends Factory
 {
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    private static ?string $password = null;
 
     /**
      * Define the model's default state.
@@ -44,9 +44,9 @@ final class UserFactory extends Factory
     /**
      * Indicate that the model's email address should be unverified.
      */
-    public function unverified(): static
+    public function unverified(): UserFactory
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'email_verified_at' => null,
         ]);
     }
@@ -54,7 +54,7 @@ final class UserFactory extends Factory
     /**
      * Indicate that the user should have a personal team.
      */
-    public function withPersonalTeam(?callable $callback = null): static
+    public function withPersonalTeam(?callable $callback = null): UserFactory
     {
         if (! Features::hasTeamFeatures()) {
             return $this->state([]);
@@ -62,8 +62,8 @@ final class UserFactory extends Factory
 
         return $this->has(
             Team::factory()
-                ->state(fn (array $attributes, User $user) => [
-                    'name' => $user->name.'\'s Team',
+                ->state(fn (array $attributes, User $user): array => [
+                    'name' => $user->name."'s Team",
                     'user_id' => $user->id,
                     'personal_team' => true,
                 ])
