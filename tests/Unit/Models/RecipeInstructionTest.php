@@ -52,4 +52,3 @@ it('can have a null image', function (): void {
     // Assert
     expect($instruction->image)->toBeNull();
 });
-
