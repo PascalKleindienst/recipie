@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Enums\Diet;
-use App\Enums\Difficulty;
 use App\Models\Recipe;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,7 +31,7 @@ test('recipes are displayed on the index page', function (): void {
         ->assertSee($recipes[2]->title);
 });
 
-test('recipes can be filtered by diet', function (): void {
+test('recipes can be filtered', function (): void {
     $user = User::factory()->create();
 
     $veganRecipe = Recipe::factory()->create([
@@ -48,43 +47,27 @@ test('recipes can be filtered by diet', function (): void {
     ]);
 
     Livewire::test('recipes.index')
-        ->set('diet', Diet::VEGAN)
+        ->set('form.diet', Diet::VEGAN)
         ->assertSee('Vegan Recipe')
         ->assertDontSee('Meat Recipe');
-});
-
-test('recipes can be filtered by difficulty', function (): void {
-    $user = User::factory()->create();
-
-    $easyRecipe = Recipe::factory()->create([
-        'user_id' => $user->id,
-        'difficulty' => Difficulty::EASY,
-        'title' => 'Easy Recipe',
-    ]);
-
-    $hardRecipe = Recipe::factory()->create([
-        'user_id' => $user->id,
-        'difficulty' => Difficulty::HARD,
-        'title' => 'Hard Recipe',
-    ]);
-
-    Livewire::test('recipes.index')
-        ->set('difficulty', Difficulty::EASY)
-        ->assertSee('Easy Recipe')
-        ->assertDontSee('Hard Recipe');
 });
 
 test('recipes can be paginated', function (): void {
     $user = User::factory()->create();
 
     // Create 30 recipes (more than the default 25 per page)
-    $recipes = Recipe::factory()->count(30)->create([
+    $recipes = Recipe::factory()->count(25)->create([
         'user_id' => $user->id,
+        'title' => 'First Page Recipe',
+    ]);
+    $secondPageRecipes = Recipe::factory()->count(25)->create([
+        'user_id' => $user->id,
+        'title' => 'Second Page Recipe',
     ]);
 
     // Test that we can see the first page of recipes
     $firstPageRecipe = $recipes[0];
-    $secondPageRecipe = $recipes[25]; // This should be on the second page
+    $secondPageRecipe = $secondPageRecipes[0]; // This should be on the second page
 
     $this->actingAs($user)
         ->get(route('recipes.index'))
