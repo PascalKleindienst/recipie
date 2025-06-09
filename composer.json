@@ -19,7 +19,8 @@
         "livewire/flux": "^2.1.1",
         "livewire/livewire": "^3.0",
         "livewire/volt": "^1.7.0",
-        "pascalkleindienst/laravel-text-to-speech": "^0.3.0"
+        "pascalkleindienst/laravel-text-to-speech": "^0.3.0",
+        "spatie/laravel-medialibrary": "^11.13"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.5",

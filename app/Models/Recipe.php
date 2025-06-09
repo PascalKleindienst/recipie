@@ -18,6 +18,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
@@ -26,7 +30,6 @@ use Illuminate\Support\Carbon;
  * @property int $preptime
  * @property int $cooktime
  * @property string|null $source
- * @property string|null $image
  * @property float|null $servings
  * @property Difficulty $difficulty
  * @property string|null $cuisine
@@ -41,6 +44,8 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, RecipeInstruction> $instructions
  * @property-read int|null $instructions_count
  * @property-read User $user
+ * @property-read MediaCollection<int, Media> $media
+ * @property-read int|null $media_count
  *
  * @method static RecipeFactory factory($count = null, $state = [])
  * @method static Builder<static>|Recipe newModelQuery()
@@ -53,7 +58,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Recipe whereDiet($value)
  * @method static Builder<static>|Recipe whereDifficulty($value)
  * @method static Builder<static>|Recipe whereId($value)
- * @method static Builder<static>|Recipe whereImage($value)
  * @method static Builder<static>|Recipe whereNutrients($value)
  * @method static Builder<static>|Recipe wherePreptime($value)
  * @method static Builder<static>|Recipe whereServings($value)
@@ -65,12 +69,13 @@ use Illuminate\Support\Carbon;
  *
  * @mixin Eloquent
  */
-final class Recipe extends Model
+final class Recipe extends Model implements HasMedia
 {
     /** @use HasFactory<RecipeFactory> */
     use HasFactory;
 
     use HasRelationships;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'title',
@@ -78,7 +83,6 @@ final class Recipe extends Model
         'preptime',
         'cooktime',
         'source',
-        'image',
         'servings',
         'difficulty',
         'diet',
@@ -87,6 +91,13 @@ final class Recipe extends Model
         'cuisine',
         'user_id',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('recipes')
+            ->singleFile()
+            ->withResponsiveImages();
+    }
 
     /**
      * @return BelongsTo<User, $this>

@@ -9,6 +9,7 @@ use App\Models\RecipeIngredient;
 use App\Models\RecipeInstruction;
 use App\Models\User;
 use App\ValueObjects\Nutrient;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 
 it('can be created using the factory', function (): void {
     // Act
@@ -28,7 +29,6 @@ it('has fillable attributes', function (): void {
         'preptime' => 15,
         'cooktime' => 30,
         'source' => 'https://example.com/recipe',
-        'image' => 'recipe.jpg',
         'servings' => 4,
         'difficulty' => Difficulty::MEDIUM,
         'diet' => Diet::VEGETARIAN,
@@ -46,7 +46,6 @@ it('has fillable attributes', function (): void {
         ->and($recipe->preptime)->toBe(15)
         ->and($recipe->cooktime)->toBe(30)
         ->and($recipe->source)->toBe('https://example.com/recipe')
-        ->and($recipe->image)->toBe('recipe.jpg')
         ->and($recipe->servings)->toBe(4)
         ->and($recipe->difficulty)->toBe(Difficulty::MEDIUM)
         ->and($recipe->diet)->toBe(Diet::VEGETARIAN)
@@ -175,4 +174,14 @@ it('orders instructions by position', function (): void {
         ->and($instructions[1]->content)->toBe('Second step')
         ->and($instructions[2]->position)->toBe(3)
         ->and($instructions[2]->content)->toBe('Third step');
+});
+
+it('registers a media collection', function (): void {
+    // Arrange
+    $recipe = Recipe::factory()->create();
+    $recipe->registerMediaCollections();
+
+    // Act & Assert
+    expect($recipe->getMedia('recipes'))->toBeInstanceOf(MediaCollection::class)
+        ->and($recipe->getMedia('recipes')->collectionName)->toBe('recipes');
 });

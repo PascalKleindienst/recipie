@@ -6,6 +6,7 @@ use App\Models\Recipe;
 use App\Models\RecipeInstruction;
 use Livewire\Volt\Component;
 use PascalKleindienst\LaravelTextToSpeech\Facades\TextToSpeech;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 new class extends Component {
@@ -37,12 +38,17 @@ new class extends Component {
 
 <div class="max-w-7xl space-y-12">
     <div class="relative">
-        @if ($recipe->image)
-            <img src="{{ asset('storage/' . $recipe->image) }}" alt="" class="[aspect-ratio:3/1] w-full rounded-xl object-cover" />
+        @if ($recipe->hasMedia('recipes'))
+            <figure class="[&>img]:[aspect-ratio:3/1] [&>img]:w-full [&>img]:overflow-hidden [&>img]:rounded-xl [&>img]:object-cover">
+                {{ $recipe->getFirstMedia('recipes') }}
+            </figure>
         @endif
 
         <h1
-            class="absolute bottom-0 flex min-h-lh w-full items-end overflow-hidden rounded-xl bg-gradient-to-b from-zinc-50/0 to-zinc-800 p-2 text-2xl font-bold text-ellipsis text-white md:p-4 md:text-3xl lg:text-4xl xl:text-6xl"
+            @class([
+                'flex min-h-lh w-full items-end overflow-hidden rounded-xl text-2xl font-bold text-ellipsis md:text-3xl lg:text-4xl xl:text-6xl',
+                'absolute bottom-0 bg-gradient-to-b from-zinc-50/0 to-zinc-800 p-2 text-white md:p-4' => $recipe->hasMedia('recipes'),
+            ])
         >
             {{ $recipe->title }}
         </h1>
@@ -190,7 +196,7 @@ new class extends Component {
                         {!! \Illuminate\Support\Str::markdown($instruction->content) !!}
                     </flux:text>
 
-                    <div>
+                    <div class="ml-auto">
                         <flux:button
                             x-show="isPlaying"
                             variant="ghost"

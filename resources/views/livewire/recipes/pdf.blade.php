@@ -225,11 +225,18 @@
         @vite(['resources/css/pdf.css'])
     </head>
     <body class="">
-        @if ($recipe->image)
+        @if ($recipe->hasMedia('recipes'))
+            @php
+                $path = $recipe->getFirstMedia('recipes')->getPathRelativeToRoot();
+                $type = pathinfo(\Illuminate\Support\Facades\Storage::disk(config('media-library.disk_name'))->path($path), PATHINFO_EXTENSION);
+                $data = \Illuminate\Support\Facades\Storage::disk(config('media-library.disk_name'))->get($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            @endphp
+
             <div
                 class="header"
                 style="
-                    background-image: url('data:image/jpg;base64,{{ base64_encode(\Illuminate\Support\Facades\Storage::disk('public')->get($recipe->image)) }}');
+                    background-image: url('data:image/{{ $type }};base64,{{ base64_encode($data) }}');
                     background-size: cover;
                     background-repeat: no-repeat;
                     background-position: center center;

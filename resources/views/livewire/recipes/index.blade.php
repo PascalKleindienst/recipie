@@ -55,8 +55,10 @@ new class extends Component {
                     'border-teal-400 bg-teal-200' => $recipe->diet === Diet::VEGAN,
                 ])
             >
-                @if ($recipe->image)
-                    <img src="{{ asset('storage/' . $recipe->image) }}" alt="" class="max-h-48 w-full rounded-xl object-cover" />
+                @if ($recipe->hasMedia('recipes'))
+                    <figure class="[&>img]:[aspect-ratio:3/1] [&>img]:w-full [&>img]:overflow-hidden [&>img]:rounded-xl [&>img]:object-cover">
+                        {{ $recipe->getFirstMedia('recipes') }}
+                    </figure>
                 @endif
 
                 <flux:heading size="xl" level="3">{{ $recipe->title }}</flux:heading>

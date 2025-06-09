@@ -26,7 +26,6 @@ final class RecipeFactory extends Factory
             'preptime' => $this->faker->randomDigit(),
             'cooktime' => $this->faker->randomDigit(),
             'source' => $this->faker->url(),
-            'image' => null,
             'servings' => $this->faker->randomFloat(),
             'difficulty' => $this->faker->randomElement(Difficulty::cases()),
             'diet' => $this->faker->randomElement(Diet::cases()),

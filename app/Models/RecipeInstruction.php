@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Database\Factories\RecipeInstructionFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -15,23 +18,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $content
  * @property string|null $image
  * @property int $recipe_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Recipe $recipe
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Recipe $recipe
  *
- * @method static \Database\Factories\RecipeInstructionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction wherePosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction whereRecipeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeInstruction whereUpdatedAt($value)
+ * @method static RecipeInstructionFactory factory($count = null, $state = [])
+ * @method static Builder<static>|RecipeInstruction newModelQuery()
+ * @method static Builder<static>|RecipeInstruction newQuery()
+ * @method static Builder<static>|RecipeInstruction query()
+ * @method static Builder<static>|RecipeInstruction whereContent($value)
+ * @method static Builder<static>|RecipeInstruction whereCreatedAt($value)
+ * @method static Builder<static>|RecipeInstruction whereId($value)
+ * @method static Builder<static>|RecipeInstruction whereImage($value)
+ * @method static Builder<static>|RecipeInstruction wherePosition($value)
+ * @method static Builder<static>|RecipeInstruction whereRecipeId($value)
+ * @method static Builder<static>|RecipeInstruction whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 final class RecipeInstruction extends Model
 {

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('preptime');
             $table->integer('cooktime');
             $table->string('source')->nullable();
-            $table->string('image')->nullable();
             $table->float('servings')->nullable();
             $table->string('difficulty');
             $table->string('cuisine')->nullable();

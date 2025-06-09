@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Database\Factories\RecipeIngredientFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -15,23 +18,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property float|null $amount
  * @property string|null $unit
  * @property int $recipe_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Recipe $recipe
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Recipe $recipe
  *
- * @method static \Database\Factories\RecipeIngredientFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient whereRecipeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient whereUnit($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RecipeIngredient whereUpdatedAt($value)
+ * @method static RecipeIngredientFactory factory($count = null, $state = [])
+ * @method static Builder<static>|RecipeIngredient newModelQuery()
+ * @method static Builder<static>|RecipeIngredient newQuery()
+ * @method static Builder<static>|RecipeIngredient query()
+ * @method static Builder<static>|RecipeIngredient whereAmount($value)
+ * @method static Builder<static>|RecipeIngredient whereCreatedAt($value)
+ * @method static Builder<static>|RecipeIngredient whereId($value)
+ * @method static Builder<static>|RecipeIngredient whereName($value)
+ * @method static Builder<static>|RecipeIngredient whereRecipeId($value)
+ * @method static Builder<static>|RecipeIngredient whereUnit($value)
+ * @method static Builder<static>|RecipeIngredient whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 final class RecipeIngredient extends Model
 {
